@@ -2,11 +2,12 @@ FROM ubuntu:14.04
 
 RUN apt-get update && \
   apt-cache search rubygems && \
-  apt-get -y install ruby ruby-dev rubygems-integration make gcc git && \
+  apt-get -y install ruby ruby-dev rubygems-integration make gcc git wget curl && \
   gem install fpm --no-rdoc --no-ri
-
-ADD <%= filename %> /root/
 
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /root
+
+ADD <%= filename %> /root/
+ADD recipe /root/recipe
 CMD bash /root/<%= filename %>
