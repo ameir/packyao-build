@@ -1,13 +1,24 @@
 require 'pp'
-def generate_dockerfile
-  require "erb"
 
-  template = IO.read("Dockerfile.erb")
+def generate_script
+  require "erb"
+  require "securerandom"
+  filename = "run-#{SecureRandom.uuid}.sh"
+
+  template = IO.read("run.sh.erb")
   message = ERB.new(template, 0, "%<>")
-  File.write('Dockerfile', message.result)
+  File.write(filename, message.result(binding))
+  return filename
 end
 
-generate_dockerfile
+def generate_dockerfile(filename)
+  template = IO.read("Dockerfile.erb")
+  message = ERB.new(template, 0, "%<>")
+  File.write('Dockerfile', message.result(binding))
+end
+
+filename = generate_script
+generate_dockerfile(filename)
 exit
 
 require 'docker'
