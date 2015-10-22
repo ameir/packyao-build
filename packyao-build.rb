@@ -19,7 +19,6 @@ end
 
 filename = generate_script
 generate_dockerfile(filename)
-exit
 
 require 'docker'
 puts 'Creating image...'
