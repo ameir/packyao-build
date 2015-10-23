@@ -23,8 +23,12 @@ generate_dockerfile(filename)
 require 'docker'
 puts 'Creating image...'
 image = Docker::Image.build_from_dir('.')
+puts image.id
 puts 'Creating container...'
 container = Docker::Container.create('Image' => image.id)
+puts container.id
 container.start
-container.top
-container.logs(stdout: true)
+puts container.top
+puts "Waiting for build to complete..."
+container.wait()
+puts container.logs(stdout: true)
