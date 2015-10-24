@@ -17,6 +17,14 @@ def generate_dockerfile(filename)
   File.write('Dockerfile', message.result(binding))
 end
 
+def copy_artifacts(container_id)
+  basepath = '/var/lib/docker/aufs/diff'
+  path = "#{basepath}/#{container_id}/root/packyao/packyao-workspace"
+  puts "Looking for files in #{path}"
+  files = Dir.glob("#{path}/*.{rpm,deb,tar*,tgz}")
+  pp files
+end
+
 filename = generate_script
 generate_dockerfile(filename)
 
@@ -30,5 +38,6 @@ puts container.id
 container.start
 puts container.top
 puts "Waiting for build to complete..."
-container.wait()
+puts container.wait(300)
 puts container.logs(stdout: true)
+copy_artifacts(container.id)
