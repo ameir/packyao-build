@@ -17,12 +17,12 @@ def generate_dockerfile(filename)
   File.write('Dockerfile', message.result(binding))
 end
 
-def copy_artifacts(container_id)
-  basepath = '/var/lib/docker/aufs/diff'
-  path = "#{basepath}/#{container_id}/root/packyao/packyao-workspace"
-  puts "Looking for files in #{path}"
-  files = Dir.glob("#{path}/*.{rpm,deb,tar*,tgz}")
-  pp files
+def copy_artifacts(container)
+  File.open('builds.tar', 'w') do |file|
+    container.copy('/root/packyao/workspace/dist/builds') do |chunk|
+      file.write(chunk)
+    end
+  end
 end
 
 filename = generate_script
@@ -40,4 +40,4 @@ puts container.top
 puts "Waiting for build to complete..."
 puts container.wait(300)
 puts container.logs(stdout: true)
-copy_artifacts(container.id)
+copy_artifacts(container)
