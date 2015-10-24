@@ -1,8 +1,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get update && \
-  apt-cache search rubygems && \
-  apt-get -y install ruby ruby-dev rubygems-integration make gcc git wget curl && \
+  apt-get -y install ruby ruby-dev rubygems-integration make gcc rpm git wget curl && \
   gem install fpm --no-rdoc --no-ri
 
 ENV DEBIAN_FRONTEND=noninteractive
