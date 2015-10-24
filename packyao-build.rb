@@ -41,3 +41,4 @@ puts "Waiting for build to complete..."
 puts container.wait(300)
 puts container.logs(stdout: true)
 copy_artifacts(container)
+container.delete
