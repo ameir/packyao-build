@@ -37,7 +37,7 @@ container = Docker::Container.create('Image' => image.id)
 puts container.id
 container.start
 puts container.top
-container.streaming_logs(stdout: true) { |stream, chunk| puts "#{stream}: #{chunk}" }
+container.streaming_logs(stdout: true, stderr: true, follow: true) { |stream, chunk| puts "#{stream}: #{chunk}" }
 puts "Waiting for build to complete..."
 puts container.wait(300)
 copy_artifacts(container)
